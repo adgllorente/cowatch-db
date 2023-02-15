@@ -25,10 +25,19 @@ app.post("/sessions", async (req, res) => {
       },
     })
     .json();
+  const { token: syncToken } = await got
+    .get("https://cas.s1.sceenic.co/sync/token/", {
+      headers: {
+        "auth-api-key": process.env.SCEENIC_KEY,
+        "auth-api-secret": process.env.SCEENIC_SECRET,
+      },
+    })
+    .json();
 
   const session = {
     id: uuid(),
     token,
+    syncToken,
     created: Date.now(),
   };
 
